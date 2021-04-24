@@ -1,5 +1,6 @@
-
 from django.urls import include,path
+from django.urls import path,re_path
+
 
 """online_book_website URL Configuration
 
@@ -18,9 +19,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('book/', include('book.urls')),
-
+    re_path(r'^$', views.index,name="index"),
 ]
