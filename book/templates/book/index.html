@@ -1,0 +1,37 @@
+{% extends 'book/base.html' %}
+
+{% block body %}
+    {% if all_books %}
+        
+
+        <ul style="list-style: none;">
+            {% for book in all_books %}
+
+            <li style="float: left;" class="col-md-4">
+                <div class="container">
+                <div class="thumbnail mx-auto"  style="width: 30rem;background-color:1px solid black;border-radius: 0%;background-color: coral;">
+                        <div class="caption">
+                               <span>
+                                <a href="#" style="color: black;font-size: medium;">
+                                    <button class="btn btn-small" style="text-align: center;color: cornsilk;background-color: black;">{{book.title}}</button>
+                                </a>
+                             </span>
+                                <span>
+                                    
+                                </span>
+                        </div>
+                </div><br/>
+                </div>
+            </li>
+
+
+            {% endfor %}
+
+
+
+        </ul>
+        {% else %}
+        <h3>You don't have any books </h3>
+
+    {% endif %}
+{% endblock %}

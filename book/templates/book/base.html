@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CloudBook{% endblock %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet"/>
+  <!--  <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}"/>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/1b65ffa4c8.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+
+        <!--Header-->
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+
+            </button>
+
+
+            <a class="navbar-brand" href="{% url 'book:index' %}" style="color: white;">CloudBook</a>
+        </div>
+
+        <!--Items-->
+
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="{% url 'book:index' %}">
+                        <span class='fas fa-record-vinyl' style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
+                        Books
+                    </a>
+                </li>
+                <li class="">
+                    <a href="#">
+                        <span  style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
+                        My Account Information
+                    </a>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-left" role='search' method="get" action="#">
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" value="">
+                </div>
+
+                <button type="submit" class="btn btn-default">Search</button>
+
+            </form>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="">
+                    <a href="#">
+                        <span  style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
+                        Order Information
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="#">
+                        <span class='fa fa-power-off' style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
+                        LogOut
+                    </a>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+
+
+    </div>
+    </nav>
+
+    <!--Here the block is code and body is just a variable name-->
+    {% block body %}
+    {% endblock %}
+
+</body>
+</html> 

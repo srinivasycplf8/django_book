@@ -20,6 +20,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+app_name = 'book'
 
 urlpatterns = [
     re_path(r'^$', views.index,name="index"),
