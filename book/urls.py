@@ -24,4 +24,8 @@ app_name = 'book'
 
 urlpatterns = [
     re_path(r'^$', views.index,name="index"),
+    re_path(r'^logout/$', views.logout_view, name='logout'),
+    re_path(r'^order/$', views.order, name='order'),
+
+
 ]

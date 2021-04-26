@@ -15,21 +15,112 @@
                                 <a href="#" style="color: black;font-size: medium;">
                                     <button class="btn btn-small" style="text-align: center;color: cornsilk;background-color: black;">{{book.title}}</button>
                                 </a>
-                             </span>
-                                <span>
-                                    
+                                
                                 </span>
+                           
                         </div>
+                        <button class="btn btn-small" style="text-align: center;color: black;background-color: white;">View Details</button>
+                        <button  class="btn btn-s btn-primary " data-toggle="modal" data-target="#OrderModal" data-booktitle="{{book.title}}" data-bookisbn="{{book.ISBN}}">Order</button>
+                        <p class="list-group-item-text"><h3>Written by {{book.publisher}}</h3></p>
+                        
                 </div><br/>
                 </div>
             </li>
+            
 
 
             {% endfor %}
 
+            
+
+        <!-- The Order Modal -->
+        <div class="modal" id="OrderModal">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h3 class="modal-title" id="OrderModalLabel">Confirm Your Order</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+                <p></p>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+                
+            </div>
+        </div>
+
+
+
+
+
+           
+
+            <p id = "demo"></p>
+            
+            <script type="text/javascript">
+            $(document).on('show.bs.modal','#OrderModal', function (e) {
+            var button =e.relatedTarget; 
+            var book_title = button.getAttribute('data-booktitle')
+            var modal = $(this)
+            modal.find('.modal-body p').text('Place Order for '+ book_title+ '?')
+
+
+            })
+            
+            </script>
+
+
 
 
         </ul>
+        <div class="modal fade" id="OrderModal" tabindex="-1" role="dialog" aria-labelledby="OrderModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="OrderModalLabel">Confirm Order</h4>
+                </div>
+                <div class="modal-body">
+                <p></p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/book/order/" method="POST" id="orderForm"> {% csrf_token %}
+                        <input type="hidden" id="order_isbn" name="order_isbn">
+                        <input type="hidden" id="order_title" name="order_title">
+                        <input type="hidden" id="order_copies" name="order_copies" value="1">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="order">Confirm</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            
+
+
+
+            <script type="text/javascript">
+            $('#OrderModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) 
+            var book_title = button.data('booktitle') 
+            var book_isbn = button.data('bookisbn') 
+
+            var modal = $(this)
+            modal.find('.modal-body p').text('Place Order for '+ book_title+ '?')
+            document.getElementById("order_isbn").value=book_isbn
+            document.getElementById("order_title").value=book_title
+            });
+            </script>
         {% else %}
         <h3>You don't have any books </h3>
 

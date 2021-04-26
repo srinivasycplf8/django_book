@@ -1,0 +1,38 @@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/1b65ffa4c8.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+
+
+{% if registered %}
+<form class="form-signin">
+<br>
+<strong>Thanks for Registering</strong><br>
+<a href="{%url 'book:index'  %}">Home Page</a><br/>
+</form>
+
+{% else %}
+<form action="/register/" class="form-signin" method="post" id="user_form" enctype="multipart/form-data"> 
+<h2 >Register</h2>
+   {% csrf_token %}
+   {% for field in user_form %}
+   <h6 style="color:red">{{field.errors}}</h6>
+   <div>
+
+   <label for="{{ field.id_for_label }}" >{{ field.label_tag }}</label>
+   </div>
+   {{field}}
+   <br>
+   {% endfor %}
+   <br>
+   <input class="btn btn-primary " type="submit" name="submit" value="Register" />
+   <br>
+   <br>
+   <a class="btn btn-default " href="book:index"> Cancel </a>
+   <br>
+</form>
+{% endif %}
