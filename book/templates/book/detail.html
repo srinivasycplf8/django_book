@@ -1,0 +1,113 @@
+{% extends 'book/base.html' %}
+
+{% block body %}
+   <h1>{{book.title}}</h1>
+
+
+
+<a href="#" class="list-group-item bs-callout-warning">
+	<h5 class="list-group-item-heading">{{book.title}}</h5>
+  <h6 class="list-group-item-heading">By {{book.author}}</h6>
+  <p class="list-group-item-heading">Published by {{book.publisher}} in {{book.publication_date}}</p>
+
+</a>
+
+<div class="list-group-item bs-callout-warning">
+
+<h3>Write Your Feedback</h3>
+
+<form action="/book/feedback/" method="POST" id="FeedbackForm"> 
+{% csrf_token %}
+
+    Write Your Comments : <input id="feedback_text" name="feedback_text" value=""></input>
+    <!--<input id="feedback_score" name="feedback_score" value="">  
+    </input>-->
+    <p class="starp">
+      Rating : 
+      <span class="starRating">
+      
+   
+        <input id="rating1" type="radio" name="rating" value="10">
+        <label for="rating1">10</label>
+         <input id="rating2" type="radio" name="rating" value="9">
+        <label for="rating2">9</label>
+        <input id="rating3" type="radio" name="rating" value="8">
+        <label for="rating3">8</label>
+         <input id="rating4" type="radio" name="rating" value="7">
+        <label for="rating4">7</label>
+         <input id="rating5" type="radio" name="rating" value="6">
+        <label for="rating5">6</label>
+        <input id="rating5" type="radio" name="rating" value="5">
+        <label for="rating5">5</label>
+        <input id="rating4" type="radio" name="rating" value="4">
+        <label for="rating4">4</label>
+        <input id="rating3" type="radio" name="rating" value="3" >
+        <label for="rating3">3</label>
+        <input id="rating2" type="radio" name="rating" value="2">
+        <label for="rating2">2</label>
+        <input id="rating1" type="radio" name="rating" value="1">
+        <label for="rating1">1</label>
+
+      </span>
+    </p>
+    <input type="hidden" id="feedback_isbn" name="feedback_isbn" value="{{book.id}}"></input>
+
+    <button type="submit" class="btn btn-primary" name="order">Confirm</button>
+
+    <br>
+</form>
+
+</br>
+
+</div>
+
+<h3>Customer Reviews </h3>
+    <br>
+  <div class="list-group-item bs-callout-warning">
+<h5>Please Enter number below to get most useful/top Comments</h5>
+<form action="/book/detail/{{book.id}}/{{book.id}}/" method="POST" id="usefulForm"> {% csrf_token %}
+      <input type="text" id="useful_id" name="useful_id"></input>
+      <button type="submit" class='btn btn-success' id="get_useful" name="get_useful" >Submit</button>
+</form>
+<br>
+</div>
+{% for feedback in feedback_list %}
+<div class="list-group-item bs-callout-warning">
+
+<a href="/book/userpage/{{feedback.customer_id}}" >User Name : {{feedback.customer_id}}</a>
+<p>User Ratings : {{feedback.score}}</p>
+<p>User Comments : {{feedback.text}}</p>
+
+<form action="/book/vote/{{book.id}} " method="POST" id="voteForm"> {% csrf_token %}
+      <input type="hidden" id="vote_feedback_id" name="vote_feedback_id" value="{{feedback.id}}"></input>
+      <input type="hidden" id="vote_rater" name="vote_rater" value="{{feedback.customer_id}}"></input>
+      <button type="submit" class='btn btn-danger' id="vote_score" name="vote_score" value='0' onclick="myFunction()">useless</button>
+      <button type="submit" class='btn btn-primary' id="vote_score" name="vote_score" value='1' onclick="myFunction()" >useful</button>
+      <button type="submit" class='btn btn-success' id="vote_score" name="vote_score" value='2' onclick="myFunction()">very useful</button>
+</form>
+</div>
+
+<p id='demo'></p>
+
+
+
+<br>
+{%  endfor %}
+
+<script>
+
+function myFunction(){
+  var text = "Thank you for your voting";
+  document.getElementById('demo').innerHTML=text;
+}
+
+</script>
+
+<br>
+
+
+
+
+
+
+{% endblock %}

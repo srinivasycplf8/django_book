@@ -1,0 +1,55 @@
+{% extends 'book/base.html' %}
+
+{%block body%}
+
+<div class="list-group-item bs-callout-warning">
+
+<h3>User Name : {{username}} </h3>
+
+<h4> Trusted Score : {{trusted_userscore}}</h4>
+<h4> Total Number Of Users Voted : {{count}}</h4>
+
+
+
+<form action="/book/trusted_page/" method="POST" id="FeedbackForm"> 
+{% csrf_token %}
+<input type="hidden" id="user_trusted" name="user_trusted" value="{{username}}"></input>
+
+<input type="hidden" id="trusted_score" name="trusted_score" value="1"></input>
+
+<button type="submit" class="btn btn-success" name="order">Trusted User</button>
+
+</form>
+
+</br>
+
+<form action="/book/untrusted_page/" method="POST" id="FeedbackForm"> 
+{% csrf_token %}
+<input type="hidden" id="user_untrusted" name="user_untrusted" value="{{username}}"></input>
+
+<input type="hidden" id="untrusted_score" name="untrusted_score" value="0"></input>
+
+<button type="submit" class="btn btn-danger" name="order">Untrusted User</button>
+
+</form>
+
+</br>
+
+</div>
+
+{% for comment in customer_feedback%}
+    <div class="list-group-item bs-callout-warning">
+
+    <a href="/book/detail/{{comment.book_id}}">Book Name : {{comment.title}}</a>
+    <br><p></p>
+    <p>Feedback Text : {{comment.text}}</p>
+    <p>Book Rating : {{comment.score}}</p>
+
+    </div>
+
+
+{%endfor%}
+
+
+
+{%endblock%}

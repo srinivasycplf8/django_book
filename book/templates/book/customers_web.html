@@ -1,0 +1,45 @@
+{% extends 'book/base.html' %}
+
+{%block body%}
+
+{% for user in all_customers %}
+
+ <div class="container">
+
+<div class="thumbnail mx-auto"  style="width: 30rem;background-color:1px solid black;border-radius: 0%;background-color: coral;">
+
+
+    <h3>
+
+    <a href="#">{{user.username}}</a> 
+
+    <h2>Manager_status : {{user.is_superuser}}</h2>
+
+    <form action="/book/user_set_manager/" method="POST" >
+     {% csrf_token %}
+      <input type="hidden" id="user_form" name="user_form" value="{{user.username}}"></input>
+      <button type="submit">Set Manager</button>      
+    </form>
+    </br>
+
+    <form action="/book/user_remove_manager/" method="POST" >
+     {% csrf_token %}
+      <input type="hidden" id="user_form" name="user_form" value="{{user.username}}"></input>
+      <button type="submit">Remove Manager</button>      
+    </form>
+    </br>
+
+
+
+
+    </h3>
+</div>
+</div>
+
+<br>
+
+
+{%endfor%}
+
+
+{%endblock%}
