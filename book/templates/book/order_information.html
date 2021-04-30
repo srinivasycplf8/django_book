@@ -1,0 +1,17 @@
+{% extends 'book/base.html' %}
+
+{% block body %}
+
+
+<ul>
+{%for order in order_list%}
+
+<li>
+<a href="/book/detail/{{order.id}}"><h4>{{order.title}}</h4></a>
+
+</li>
+
+{%endfor%}
+</ul>
+
+{%endblock%}

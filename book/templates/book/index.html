@@ -16,6 +16,14 @@
  <a href="{% url 'book:customers_web' %}" class="btn btn-lg" role="button" style="text-align: center;color: cornsilk;background-color: black;">Add/Remove Managers</a>  
  </span> 
 
+ <span>
+ <a href="{% url 'book:statistics' %}" class="btn btn-lg" role="button" style="text-align: center;color: cornsilk;background-color: black;">Statistics of Popular Books</a>  
+ </span> 
+
+ <span>
+
+ </span>
+
  <br>
 <br>   
 </div>       
@@ -56,7 +64,7 @@
                         <button  class="btn btn-s btn-dark " data-toggle="modal" data-target="#updatebookmodal" data-booktitle="{{book.title}}" data-bookisbn="{{book.id}}" data-bookcopies="{{book.number_of_books}}">Update the Book Stock</button>
                         {% endif %}
                         <button  class="btn btn-s btn-primary " data-toggle="modal" data-target="#New_orModal" data-booktitle="{{book.title}}" data-bookisbn="{{book.id}}" data-bookcopies="{{book.number_of_books}}">Order</button>
-                        <p class="list-group-item-text"><h3>Written by {{book.publisher}}</h3></p>
+                        <p class="list-group-item-text"><h3>Written by {{book.author}}</h3></p>
                         
                 </div><br/>
                 </div>

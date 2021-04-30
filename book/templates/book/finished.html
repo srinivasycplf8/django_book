@@ -1,4 +1,30 @@
+{%if out_of_stock%}
+
+<h1>Out of Stock</h1>
+
+{%endif%}
+
+{%if stock%}
+
 <h1>Ordered succefull</h1>
+<ul>
+{%for book in recommendation_list%}
+<li>
+<a href="/book/detail/{{book.id}}/">{{book.title}}</a>
+</li>
+{%endfor%}
+</ul>
+
+{%endif%}
+
+{%if less%}
+
+<h1>Very less stock</h1>
+
+{%endif%}
+
+
+
 
 <a href={% url 'book:index' %}>HomePage</a>
 

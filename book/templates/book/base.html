@@ -50,20 +50,19 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="#">
+                    <a href="/book/userpage/{{user.username}}">
 
                         <span  style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
-                        My Account Information
+                        Hi, {{user.username}}
                     </a>
                 </li>
-                <li><a href="/bookstore/account">Welcome, {{user.fullname}}</a></li>
 
             </ul>
 
-            <form class="navbar-form navbar-left" role='search' method="get" action="#">
+            <form class="navbar-form navbar-left" role='search' method="get" action="{% url 'book:index' %}">
 
                 <div class="form-group">
-                    <input type="text" class="form-control" name="q" value="">
+                    <input type="text" class="form-control" name="q" value="{{ request.GET.q }}">
                 </div>
 
                 <button type="submit" class="btn btn-default">Search</button>
@@ -73,15 +72,12 @@
             <ul class="nav navbar-nav navbar-right">
 
                 <li class="">
-                    <a href="#">
+                    <a href="/book/order_information">
                         <span  style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
-                        Order Information
+                        Order History
                     </a>
                      <li>
-                     <a href="/book/shoppingcart">
-                     <span  style='color:whitesmoke' aria-hidden="true"></span>&nbsp;
-                        Shopping cart
-                    </a>
+                     
                     </li>
 
 

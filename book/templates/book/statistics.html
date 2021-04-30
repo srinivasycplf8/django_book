@@ -1,0 +1,52 @@
+{% extends 'book/base.html' %}
+
+{% block body %}
+<div class="list-group-item bs-callout-warning">
+
+<h1>Enter any number to get the top books (sales)</h1>
+<form action="/book/statistics/" method="POST" id="statisticsForm"> {% csrf_token %}
+      <input type="text" id="statistics_id" name="statistics_id" ></input>
+      <button type="submit" class='btn btn-success' id="statistics_score" name="statistics_score" >Submit</button>
+</form>
+</div>
+
+<div class="list-group-item bs-callout-warning">
+
+
+<h1>Popular Books </h1>
+<ul>
+{%for book in popular_books%}
+<li><a href="/book/detail/{{book.id}}"><h3>{{book.title}}</h3></a></li>
+
+{%endfor%}
+
+</div>
+
+</ul>
+
+<div class="list-group-item bs-callout-warning">
+
+<h1>Popular Authors </h1>
+<ul>
+{%for author in popular_authors%}
+<li><h3>{{author.author}}</h3></li>
+
+{%endfor%}
+</div>
+
+</ul>
+
+<div class="list-group-item bs-callout-warning">
+
+<ul>
+<h1>Popular Publishers </h1>
+
+{%for publishers in popular_publishers%}
+<li><h3>{{publishers.publisher}}</h3></li>
+
+{%endfor%}
+
+</div>
+</ul>
+
+{%endblock%}

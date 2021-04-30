@@ -30,13 +30,87 @@ def index(request):
         book_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
         username = request.user.username
         isManager = request.user.is_superuser
+        query =  request.GET.get("q") 
+        if query : 
+            query = '%'+str(query)+'%'
+            cursor.execute("select * from book_book where title LIKE '%s' or author LIKE '%s' or publisher Like '%s' or language LIKE '%s' ORDER by publication_date DESC; "%(query,query,query,query))
+            columns = [col[0] for col in cursor.description]
+            book_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
         context={
         'all_books':book_list,
         'isManager':isManager
         }
-       
+        return render(request, 'book/index.html',context)
+
+@login_required(login_url='/login')
+def order_information(request):
+    order_list = ""
+    username = request.user.username
+    with connection.cursor() as cursor:
+        cursor.execute("select title,id from book_book where id in (select distinct(book_id) from book_order where customer_id='%s');"%(username))
+        columns = [col[0] for col in cursor.description]
+        order_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        context={
+            'order_list':order_list
+        }
+
+    return render(request,'book/order_information.html',context)
+
         
-    return render(request, 'book/index.html',context)
+
+@login_required(login_url='/login')
+def statistics(request,author=0,publisher=0):
+    popular_books=''
+    popular_authors=''
+    popular_publishers=''
+    with connection.cursor() as cursor:
+        if request.method == 'POST': 
+            number_of_books=int(request.POST['statistics_id'])
+            cursor.execute("select count(distinct(book_id)) from book_order;")
+            different_books = int(cursor.fetchone()[0])
+            if number_of_books>=different_books:
+                sql = "select title,id from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_books= [dict(zip(columns, row)) for row in cursor.fetchall()]
+            else:
+                sql = "select title,id from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_books= [dict(zip(columns, row)) for row in cursor.fetchall()][0:number_of_books]
+            number_of_authors=int(request.POST['statistics_id'])
+            cursor.execute(" select count(distinct(author)) from book_book where id in (select distinct(book_id) from book_order);")
+            different_authors = int(cursor.fetchone()[0])
+            if number_of_authors>=different_authors:
+                sql = "select distinct(author) from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_authors= [dict(zip(columns, row)) for row in cursor.fetchall()]
+            else:
+                sql = "select distinct(author) from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_authors= [dict(zip(columns, row)) for row in cursor.fetchall()][0:number_of_authors]
+            
+            number_of_publishers=int(request.POST['statistics_id'])
+            cursor.execute(" select count(distinct(publisher)) from book_book where id in (select distinct(book_id) from book_order);")
+            different_publishers = int(cursor.fetchone()[0])
+            if number_of_publishers>=different_publishers:
+                sql = "select distinct(publisher) from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_publishers= [dict(zip(columns, row)) for row in cursor.fetchall()]
+            else:
+                sql = "select distinct(publisher) from book_book where id in(select book_id from ( select book_id,count(*) from book_order group by book_id order by count(*) DESC)P)"
+                cursor.execute(sql)
+                columns = [col[0] for col in cursor.description]
+                popular_publishers= [dict(zip(columns, row)) for row in cursor.fetchall()][0:number_of_publishers]
+
+            
+    
+    return render(request,'book/statistics.html',{'popular_books':popular_books,'popular_authors':popular_authors,'popular_publishers':popular_publishers})
+
+        
 
 @login_required(login_url='/login')
 def customers_web(request):
@@ -98,6 +172,8 @@ def logout_view(request):
     
     return render(request, 'book/login.html')
 
+
+
 def order(request):
     with connection.cursor() as cursor:
         if request.method=='POST':
@@ -107,15 +183,28 @@ def order(request):
             copies = int(request.POST['order_copies'])  
             cursor.execute("SELECT number_of_books FROM book_book WHERE id = '%s'"%(book_id))
             availaible_copies = int(cursor.fetchone()[0])  
+            out_of_stock=''
+            stock=''
+            less=''
+            recommendation_list=''
+
             if availaible_copies>=copies:
+                stock='1'
                 username = request.user.username
                 cursor.execute("INSERT INTO book_order (customer_id,book_id,order_date,order_status) \
                     VALUES ('%s','%s','%s','completed')"%(username,book_id,date))
-                cursor.execute("UPDATE book_book SET number_of_books='%d' WHERE ISBN = '%s' "%(availaible_copies-copies,book_id))
+                cursor.execute("UPDATE book_book SET number_of_books='%d' WHERE id = '%s' "%(availaible_copies-copies,book_id))
+                cursor.execute("select title,id from book_book where id in (select distinct(book_id )from book_order where book_id!='%s' and customer_id in (select customer_id from book_order where book_id in ( select book_id from (select book_id from book_order where customer_id = '%s' GROUP BY book_id )P where customer_id!='%s')));"%(book_id,username,username))
+                columns = [col[0] for col in cursor.description]
+                recommendation_list = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            elif availaible_copies==0 :
+                out_of_stock='0'
+            else:
+                less='1'
                 
             
     
-    return render(request,'book/finished.html')
+    return render(request,'book/finished.html',{'out_of_stock':out_of_stock,'stock':stock,'less':less,'recommendation_list':recommendation_list})
 
 @login_required(login_url='/login')
 def detail(request, isbn,useful=0):
@@ -343,23 +432,3 @@ def updatecopies(request):
 
 
 
-
-
-'''
-class DetailView(generic.DetailView):
-    model=Album
-    template_name='music/detail.html'
-
-  
-class AlbumCreate(CreateView):
-    model=Album
-    fields=['artist','album_title','genre','album_logo']
-
-class AlbumUpdate(UpdateView):
-    model=Album
-    fields=['artist','album_title','genre','album_logo']
-
-
-class AlbumDelete(DeleteView):
-    model=Album
-    success_url=reverse_lazy('music:index')'''

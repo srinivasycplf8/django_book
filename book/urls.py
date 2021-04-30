@@ -39,6 +39,14 @@ urlpatterns = [
     re_path(r'^userpage/(?P<username>\w+)/$',views.userpage, name='userpage'),
     re_path(r'^trusted_page/$',views.trusted_page, name='trusted_page'),
     re_path(r'^untrusted_page/$',views.untrusted_page, name='untrusted_page'),
+    re_path(r'^statistics/$',views.statistics, name='statistics'),
+    re_path(r'^statistics/([0-9]+)/$',views.statistics, name='statistics'),
+    re_path(r'^order_information/$',views.order_information, name='order_information'),
+
+
+
+
+
 
 
 

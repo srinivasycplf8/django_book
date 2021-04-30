@@ -9,30 +9,49 @@
 
 
 {% if registered %}
+
 <form class="form-signin">
+
+
 <br>
-<strong>Thanks for Registering</strong><br>
-<a href="{%url 'book:index'  %}">Home Page</a><br/>
+
+<strong>Thank you for Registration</strong><br>
+
+<a href="{%url 'book:index'  %}" class='btn btn-success'>Home Page</a><br/>
 </form>
 
 {% else %}
+<div class="list-group-item bs-callout-warning">
 <form action="/register/" class="form-signin" method="post" id="user_form" enctype="multipart/form-data"> 
 <h2 >Register</h2>
    {% csrf_token %}
+
    {% for field in user_form %}
-   <h6 style="color:red">{{field.errors}}</h6>
+
+   <h5 style="color:red">{{field.errors}}</h5>
+
+
    <div>
 
-   <label for="{{ field.id_for_label }}" >{{ field.label_tag }}</label>
+   <label for="{{ field.id_for_label }}" >
+   
+   
+   {{ field.label_tag }}
+   
+   
+   
+   </label>
+
    </div>
    {{field}}
    <br>
    {% endfor %}
    <br>
-   <input class="btn btn-primary " type="submit" name="submit" value="Register" />
+   <input class="btn btn-success " type="submit" name="submit" value="Register" />
    <br>
    <br>
-   <a class="btn btn-default " href="book:index"> Cancel </a>
+   <a class="btn btn-danger " href="book:index"> Cancel </a>
    <br>
 </form>
+</div>
 {% endif %}

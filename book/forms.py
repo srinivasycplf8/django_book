@@ -13,9 +13,14 @@ class CustomerCreationForm(forms.ModelForm):
 	def clean_password2(self):
 		password1 = self.cleaned_data.get("password1")
 		password2 = self.cleaned_data.get("password2")
-		if password1 and password2 and password1!=password2:
+		if len(password1)==1:
+			raise forms.ValidationError("Password is very short")
+		if  not any( char in "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]" for char in password1):
+			raise forms.ValidationError("You need to add special characters")
+		if password1 and password2 and password2!=password1:
 			raise forms.ValidationError("Password does not match.")
 		return password2
+	
 
 	def save(self, commit=True):
 	    user = super(CustomerCreationForm, self).save(commit=False)

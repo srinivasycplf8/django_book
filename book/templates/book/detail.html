@@ -6,9 +6,15 @@
 
 
 <a href="#" class="list-group-item bs-callout-warning">
-	<h5 class="list-group-item-heading">{{book.title}}</h5>
-  <h6 class="list-group-item-heading">By {{book.author}}</h6>
+
+	<h6 class="list-group-item-heading">{{book.title}}</h5>
+
+
+  <h7 class="list-group-item-heading">By {{book.author}}</h6>
+  
   <p class="list-group-item-heading">Published by {{book.publisher}} in {{book.publication_date}}</p>
+  
+  <p class="list-group-item-heading">Language : {{book.language}} in {{book.title}}</p>
 
 </a>
 
@@ -65,8 +71,10 @@
     <br>
   <div class="list-group-item bs-callout-warning">
 <h5>Please Enter number below to get most useful/top Comments</h5>
-<form action="/book/detail/{{book.id}}/{{book.id}}/" method="POST" id="usefulForm"> {% csrf_token %}
+<form action="/book/detail/{{book.id}}/{{book.id}}/" method="POST" id="usefulForm">
+ {% csrf_token %}
       <input type="text" id="useful_id" name="useful_id"></input>
+      
       <button type="submit" class='btn btn-success' id="get_useful" name="get_useful" >Submit</button>
 </form>
 <br>
@@ -75,10 +83,13 @@
 <div class="list-group-item bs-callout-warning">
 
 <a href="/book/userpage/{{feedback.customer_id}}" >User Name : {{feedback.customer_id}}</a>
+
 <p>User Ratings : {{feedback.score}}</p>
+
 <p>User Comments : {{feedback.text}}</p>
 
-<form action="/book/vote/{{book.id}} " method="POST" id="voteForm"> {% csrf_token %}
+<form action="/book/vote/{{book.id}} " method="POST" id="voteForm"> 
+{% csrf_token %}
       <input type="hidden" id="vote_feedback_id" name="vote_feedback_id" value="{{feedback.id}}"></input>
       <input type="hidden" id="vote_rater" name="vote_rater" value="{{feedback.customer_id}}"></input>
       <button type="submit" class='btn btn-danger' id="vote_score" name="vote_score" value='0' onclick="myFunction()">useless</button>
